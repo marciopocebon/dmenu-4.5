@@ -1,0 +1,28 @@
+#!/bin/bash
+cachedir=${XDG_CACHE_HOME:-"$HOME/.cache"}
+if [ -d "$cachedir" ]; then
+        cache=$cachedir/dmenu_run
+else
+        cache=$HOME/.dmenu_cache # if no xdg dir, fall back to dotfile in ~
+fi
+cmd=`(
+        IFS=:
+        if [ -f ~/.bash_aliases ]; then
+            aliases=( ~/.bash_aliases )
+        fi
+
+        if stest -dqr -n "$cache" $PATH || stest -fqr -n "$cache" "$aliases"; then
+        (
+            stest -flx $PATH
+            source $aliases
+            alias | awk -F '[ =]' '{print $1}'
+        ) | sort -u | tee "$cache" | dmenu "$@"
+        else
+            dmenu "$@" < "$cache"
+        fi
+    )`
+
+# perform alias expansion on $cmd
+if [ -f ~/.bash_aliases ]; then
+    echo -e "source ~/.bash_aliases \n $cmd" | bash -O expand_aliases &
+fi
