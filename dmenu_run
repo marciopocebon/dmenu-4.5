@@ -15,7 +15,7 @@ cmd=`(
         (
             stest -flx $PATH
             source $aliases
-            alias | awk -F '[ =]' '{print $1}'
+            alias | awk -F '[ =]' '{print $2}'
         ) | sort -u | tee "$cache" | dmenu "$@"
         else
             dmenu "$@" < "$cache"
