@@ -5,6 +5,16 @@ if [ -d "$cachedir" ]; then
 else
         cache=$HOME/.dmenu_cache # if no xdg dir, fall back to dotfile in ~
 fi
+
+# Switch to Lating keyboard layout before starting input.
+# To see what index it has, type xkbswitch. By default, it is 0.
+latin_kblayout=0
+current_kblayout=$(xkbswitch)
+if [[ "$current_kblayout" != "$latin_kblayout" ]]; then
+        # Switch to Latin layout
+        xkbswitch $latin_kblayout
+fi
+
 cmd=`(
         IFS=:
         if [ -f ~/.bash_aliases ]; then
@@ -26,3 +36,8 @@ cmd=`(
 if [ -f ~/.bash_aliases ]; then
     echo -e "source ~/.bash_aliases \n $cmd" | bash -O expand_aliases &
 fi
+
+# Restore default keyboard layout
+xkbswitch $current_kblayout
+
+# EOF
