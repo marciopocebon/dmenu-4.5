@@ -2,6 +2,19 @@ dmenu - dynamic menu
 ====================
 dmenu is an efficient dynamic menu for X.
 
+This is my personal fork with several patches:
+
+- bash_aliases
+
+    Run dmenu with custom aliases defined in $HOME/.bash_aliases
+
+- xkbswitch
+
+    Switch to Lating keyboard layout before starting input
+
+
+These patches are implemented in the dmenu_run file and do not
+affect the source code of dmenu.
 
 Requirements
 ------------
